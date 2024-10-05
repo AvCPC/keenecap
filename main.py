@@ -93,8 +93,9 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
                 output_path = f"{interface}_capture_{timestamp}.pcap"
                 router.download_capture_file(capture_file, output_path)
                 router.delete_remote_capture_file(interface)
-                logger.info(f"Capture not started on interface {interface}, starting capture...")
-                router.start_capture(interface)
+            
+            logger.info(f"Capture not started on interface {interface}, starting capture...")
+            router.start_capture(interface)
 
             capture_file = details["statistics"]["file"]
             bytes_total = details["statistics"]["bytes-total"]
