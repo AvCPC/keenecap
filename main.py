@@ -87,7 +87,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
         for interface, details in list(capture_interfaces["monitor"]["capture"]["interface"].items())[-3:]:
             if details["statistics"]["started"]:
                 logger.info(f"Capture already running on interface {interface}, stopping and downloading...")
-                capture_file = details["statistics"]["file"]
+                capture_file = details["capture-file"]
                 router.stop_capture(interface)
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
                 output_path = f"{interface}_capture_{timestamp}.pcap"

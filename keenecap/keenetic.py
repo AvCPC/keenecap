@@ -104,7 +104,7 @@ class Router:
                 interface_id = details["id"]
                 started = details["statistics"]["started"]
                 bytes_total = details["statistics"]["bytes-total"]
-                capture_file = details["statistics"]["file"]
+                capture_file = details["capture-file"]
                 logger.info(f"Interface ID: {interface_id}, Started: {started}, Bytes Total: {bytes_total}, File: {capture_file}")
             return interfaces_info
 
