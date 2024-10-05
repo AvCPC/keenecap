@@ -1,6 +1,7 @@
 import argparse
 import logging
 import concurrent.futures
+import time
 from keenecap.keenetic import Router  # Import the class from router.py
 from keenecap.logger import logger, log_progress
 
@@ -47,10 +48,10 @@ def main():
             future.result()  # Wait for the capture worker to complete
             time.sleep(1)  # Sleep for 1 second
             capture_interfaces = router.get_capture_interfaces()
-            capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
-            logger.info(f"Capture file for interface {interface}: {capture_file}")
             if capture_interfaces:
                 for interface in capture_interfaces["monitor"]["capture"]["interface"].keys():
+                    capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
+                    logger.info(f"Capture file for interface {interface}: {capture_file}")
                     router.stop_capture(interface)
                     router.delete_remote_capture_file(interface)
 
