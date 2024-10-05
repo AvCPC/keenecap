@@ -1,6 +1,7 @@
 import requests
 import hashlib
 from keenecap.logger import logger
+from urllib.parse import quote
 
 class Router:
     def __init__(self, ip_addr, login, password):
@@ -110,7 +111,8 @@ class Router:
 
     def download_capture_file(self, capture_file, output_path):
         """Download the capture file from the router."""
-        url = f"http://{self.ip_addr}/ci/{capture_file}"
+        encoded_capture_file = quote(capture_file)
+        url = f"http://{self.ip_addr}/ci/{encoded_capture_file}"
         response = self._send_request(url)
         if response.status_code == 200:
             sanitized_output_path = output_path.replace('/', '_')
