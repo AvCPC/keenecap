@@ -16,6 +16,7 @@ def main():
     parser.add_argument("-l", "--login", required=True, help="Username for authentication.")
     parser.add_argument("-P", "--passwd", required=True, help="Password for authentication.")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for debugging.")
+    parser.add_argument("-s", "--size", type=int, default=1, help="Capture size limit in MB (default 1 MB).")
 
     # Parse command line arguments
     args = parser.parse_args()
@@ -38,7 +39,7 @@ def main():
     # Start the capture worker and pcap analysis in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
         try:
-            future = executor.submit(capture_worker, router, executor, lambda: stop_threads)
+            future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size)
             future.result()  # Wait for the capture worker to complete
         except KeyboardInterrupt:
             logger.info("Capture worker stopping...")
@@ -67,7 +68,7 @@ def main():
                     router.stop_capture(interface)
                     router.delete_remote_capture_file(interface)
 
-def capture_worker(router, executor, stop_flag):
+def capture_worker(router, executor, stop_flag, capture_size_mb):
     """Worker to manage packet captures on all interfaces."""
     import time
     import os
@@ -91,7 +92,7 @@ def capture_worker(router, executor, stop_flag):
             capture_file = details["statistics"]["file"]
             bytes_total = details["statistics"]["bytes-total"]
 
-            if bytes_total > 1_000_000:  # Check if capture size exceeds 1MB
+            if bytes_total > capture_size_mb * 1_000_000:  # Check if capture size exceeds specified limit
                 logger.info(f"Capture on interface {interface} exceeds 1MB, processing...")
                 router.stop_capture(interface)
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
