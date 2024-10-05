@@ -59,16 +59,16 @@ class Router:
             return None
 
     def start_capture(self, interface):
-    """Start packet capture on a specified interface."""
-    url = f"rci/monitor/capture/interface/{interface}"
-    payload = {"enable": True}
-    response = self._send_request(url, post_data=payload)
-    if response.status_code == 200:
-        logger.info(f"Capture started successfully on interface {interface}")
-        return True
-    else:
-        logger.error(f"Failed to start capture on interface {interface}")
-        return False
+        """Start packet capture on a specified interface."""
+        url = f"rci/monitor/capture/interface/{interface}"
+        payload = {"enable": True}
+        response = self._send_request(url, post_data=payload)
+        if response.status_code == 200:
+            logger.info(f"Capture started successfully on interface {interface}")
+            return True
+        else:
+            logger.error(f"Failed to start capture on interface {interface}")
+            return False
 
     def delete_remote_capture_file(self, interface):
         """Delete the remote capture file on a specified interface."""
