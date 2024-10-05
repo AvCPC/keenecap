@@ -16,7 +16,7 @@ def main():
     parser.add_argument("-l", "--login", required=True, help="Username for authentication.")
     parser.add_argument("-P", "--passwd", required=True, help="Password for authentication.")
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for debugging.")
-    parser.add_argument("-s", "--size", type=int, default=1, help="Capture size limit in MB (default 1 MB).")
+    parser.add_argument("-s", "--size", type=float, default=1.0, help="Capture size limit in MB (default 1.0 MB).")
 
     # Parse command line arguments
     args = parser.parse_args()
