@@ -94,7 +94,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
                 router.download_capture_file(capture_file, output_path)
                 router.delete_remote_capture_file(interface)
             
-            logger.info(f"Capture not started on interface {interface}, starting capture...")
+            logger.info(f"Starting new capture on interface {interface}...")
             router.start_capture(interface)
 
             capture_file = details["statistics"]["file"]
