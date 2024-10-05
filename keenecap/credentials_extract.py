@@ -91,9 +91,9 @@ def extract_packet_info(packet):
 
         except Exception as e:
             logger.error(f"Error analyzing packet: {e}")
-def analyze_pcap_with_sniff(pcap_file):
+def analyze_pcap_with_sniff(pcap_file, prefix='captures/'):
     logger.info(f"Analyzing pcap file: {pcap_file}")
-    sniff(offline=pcap_file, session=TCPSession, prn=extract_packet_info)
+    sniff(offline=prefix+pcap_file, session=TCPSession, prn=extract_packet_info)
     logger.info(f"pcap Analysis complete: {pcap_file}")
 
 
