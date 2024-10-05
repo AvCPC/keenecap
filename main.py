@@ -89,6 +89,8 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
             output_path = f"{interface}_capture_{timestamp}.pcap"
             router.download_capture_file(capture_file, output_path)
             router.delete_remote_capture_file(interface)
+            logger.info(f"Starting new capture on interface {interface}...")
+            router.start_capture(interface)
 
     while True:
         if stop_flag():
@@ -102,8 +104,6 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
 
 
         for interface, details in list(capture_interfaces["monitor"]["capture"]["interface"].items())[-3:]:
-            logger.info(f"Starting new capture on interface {interface}...")
-            router.start_capture(interface)
 
             capture_file = details["statistics"]["file"]
             bytes_total = details["statistics"]["bytes-total"]
