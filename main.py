@@ -37,6 +37,7 @@ def main():
         logger.error("Authentication failed")
         return
 
+    router.get_version()
     # Start the capture worker and pcap analysis in parallel
     with concurrent.futures.ThreadPoolExecutor() as executor:
         try:
@@ -46,7 +47,6 @@ def main():
             logger.info("Capture worker stopping...")
             stop_threads = True
             future.result()  # Wait for the capture worker to complete
-            time.sleep(1)  # Sleep for 1 second
             capture_interfaces = router.get_capture_interfaces()
             if capture_interfaces:
                 for interface in capture_interfaces["monitor"]["capture"]["interface"].keys():
@@ -55,22 +55,7 @@ def main():
                     router.stop_capture(interface)
                     router.delete_remote_capture_file(interface)
 
-    # Retrieve router version
-    version_info = router.get_version()
-    if version_info:
-        logger.info("Version information retrieved successfully")
 
-    # Start the capture worker and pcap analysis in parallel
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        try:
-            executor.submit(capture_worker, router, executor)
-        except KeyboardInterrupt:
-            logger.info("Capture worker stopped by user")
-            capture_interfaces = router.get_capture_interfaces()
-            if capture_interfaces:
-                for interface in capture_interfaces["monitor"]["capture"]["interface"].keys():
-                    router.stop_capture(interface)
-                    router.delete_remote_capture_file(interface)
 
 def capture_worker(router, executor, stop_flag, capture_size_mb):
     """Worker to manage packet captures on all interfaces."""
@@ -116,9 +101,15 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
             bytes_total = details["statistics"]["bytes-total"]
 
             if bytes_total > capture_size_mb * 1_000_000:  # Check if capture size exceeds specified limit
+                router.stop_capture(interface)
                 logger.info(f"Capture on interface {interface} exceeds {capture_size_mb}MB, processing...")
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
                 output_path = f"{interface}_capture_{timestamp}.pcap"
+                #time.sleep(1)
+                capture_interfaces = router.get_capture_interfaces()
+                #print(capture_interfaces)
+                capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]  
+                logger.info(f"Downloading capture file {capture_file} to {output_path}")
                 router.download_capture_file(capture_file, output_path)
                 executor.submit(analyze_pcap_with_sniff, output_path)
                 router.delete_remote_capture_file(interface)

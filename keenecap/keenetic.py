@@ -106,13 +106,13 @@ class Router:
                 started = details["statistics"]["started"]
                 bytes_total = details["statistics"]["bytes-total"]
                 capture_file = details["capture-file"]
-                logger.info(f"Interface ID: {interface_id}, Started: {started}, Bytes Total: {bytes_total}, File: {capture_file}")
+                logger.debug(f"Interface ID: {interface_id}, Started: {started}, Bytes Total: {bytes_total}, File: {capture_file}")
             return interfaces_info
 
     def download_capture_file(self, capture_file, output_path):
         """Download the capture file from the router."""
         encoded_capture_file = capture_file.replace(" ", "%20")
-        url = f"http://{self.ip_addr}/ci/{encoded_capture_file}"
+        url = f"/ci/{encoded_capture_file}"
         response = self._send_request(url)
         if response.status_code == 200:
             sanitized_output_path = output_path.replace('/', '_')
