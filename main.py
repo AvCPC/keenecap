@@ -101,7 +101,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
             bytes_total = details["statistics"]["bytes-total"]
 
             if bytes_total > capture_size_mb * 1_000_000:  # Check if capture size exceeds specified limit
-                logger.info(f"Capture on interface {interface} exceeds 1MB, processing...")
+                logger.info(f"Capture on interface {interface} exceeds {capture_size_mb}MB, processing...")
                 router.stop_capture(interface)
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
                 output_path = f"{interface}_capture_{timestamp}.pcap"
