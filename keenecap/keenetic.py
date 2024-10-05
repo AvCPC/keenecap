@@ -112,6 +112,7 @@ class Router:
     def download_capture_file(self, capture_file, output_path):
         """Download the capture file from the router."""
         encoded_capture_file = quote(capture_file)
+        print(encoded_capture_file)
         url = f"http://{self.ip_addr}/ci/{encoded_capture_file}"
         response = self._send_request(url)
         if response.status_code == 200:
