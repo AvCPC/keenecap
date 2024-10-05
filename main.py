@@ -85,7 +85,14 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
             break
 
         for interface, details in list(capture_interfaces["monitor"]["capture"]["interface"].items())[-3:]:
-            if not details["statistics"]["started"]:
+            if details["statistics"]["started"]:
+                logger.info(f"Capture already running on interface {interface}, stopping and downloading...")
+                capture_file = details["statistics"]["file"]
+                router.stop_capture(interface)
+                timestamp = time.strftime("%Y%m%d_%H%M%S")
+                output_path = f"{interface}_capture_{timestamp}.pcap"
+                router.download_capture_file(capture_file, output_path)
+                router.delete_remote_capture_file(interface)
                 logger.info(f"Capture not started on interface {interface}, starting capture...")
                 router.start_capture(interface)
 
