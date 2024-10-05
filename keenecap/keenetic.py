@@ -113,7 +113,8 @@ class Router:
         url = f"http://{self.ip_addr}/ci/{capture_file}"
         response = self._send_request(url)
         if response.status_code == 200:
-            with open(f"captures/{output_path}", 'wb') as file:
+            sanitized_output_path = output_path.replace('/', '_')
+            with open(f"captures/{sanitized_output_path}", 'wb') as file:
                 file.write(response.content)
             logger.info(f"Capture file downloaded successfully to {output_path}")
             return True
