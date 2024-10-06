@@ -25,6 +25,9 @@ coloredlogs.install(
 
 # Set the credslayer logger to only show errors
 credslayer_logger.logger.setLevel(logging.ERROR)
+def found(session, msg):
+    logger.info("[FOUND] [{} {}] {}".format(session.protocol, str(session), msg))
+credslayer_logger.found = found 
 
 def log_progress(message):
     """Log a message that refreshes the current line."""
