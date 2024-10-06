@@ -5,7 +5,7 @@ import time
 from keenecap.keenetic import Router  # Import the class from router.py
 from keenecap.logger import logger, log_progress
 
-from credslayer import process_pcap
+from keenecap.pcap_processor import process_pcap_with_logging
 
 stop_threads = False
 
@@ -114,7 +114,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
                 capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]  
                 logger.info(f"Downloading capture file {capture_file} to {output_path}")
                 router.download_capture_file(capture_file, output_path)
-                executor.submit(process_pcap, output_path)
+                executor.submit(process_pcap_with_logging, output_path)
                 router.delete_remote_capture_file(interface)
                 router.start_capture(interface)
 
