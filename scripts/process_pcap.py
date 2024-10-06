@@ -9,9 +9,10 @@ from keenecap.pcap_processor import process_pcap_with_logging
 def main():
     parser = argparse.ArgumentParser(description="Process a pcap file.")
     parser.add_argument("file", help="Path to the pcap file to process.")
+    parser.add_argument("--delete", action="store_true", help="Delete the pcap file after processing.")
     args = parser.parse_args()
 
-    process_pcap_with_logging(args.file,'')
+    process_pcap_with_logging(args.file, '', args.delete)
 
 if __name__ == "__main__":
     main()
