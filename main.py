@@ -5,7 +5,7 @@ import time
 from pyshark.capture.capture import TSharkCrashException
 from keenecap.keenetic import Router  # Import the class from router.py
 from keenecap.logger import logger, log_progress
-
+import os
 from keenecap.pcap_processor import process_pcap_with_logging
 
 stop_threads = False
@@ -61,6 +61,7 @@ def main():
                         logger.info(f"Capture file for interface {interface}: {capture_file}")
                         router.stop_capture(interface)
                         router.delete_remote_capture_file(interface)
+                os._exit(0)        
     except RuntimeError as e:
         logger.error(f"Aborting due to error: {e}")
 
