@@ -3,6 +3,12 @@
 This project is designed to interact with a Keenetic router, providing functionalities such as authentication, capturing network traffic, and downloading capture files.
 
 ## Installation
+
+### Prerequisites
+Ensure that TShark is installed on your system. TShark is a network protocol analyzer that is part of the Wireshark suite. You can install it using your package manager. For example, on Ubuntu, you can run:
+```bash
+sudo apt-get install tshark
+```
 To install the required dependencies, run:
 ```bash
 pip install -r requirements.txt
