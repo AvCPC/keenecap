@@ -25,8 +25,21 @@ coloredlogs.install(
 
 # Set the credslayer logger to only show errors
 credslayer_logger.logger.setLevel(logging.ERROR)
+import os
+import time
+
+# Create results directory if it doesn't exist
+os.makedirs('results', exist_ok=True)
+
+# Create a timestamped file at the start of the program
+timestamp = time.strftime("%Y%m%d_%H%M%S")
+results_file_path = os.path.join('results', f"results_{timestamp}.log")
+
 def found(session, msg):
-    logger.info("[FOUND] [{} {}] {}".format(session.protocol, str(session), msg))
+    log_message = "[FOUND] [{} {}] {}".format(session.protocol, str(session), msg)
+    logger.info(log_message)
+    with open(results_file_path, 'a') as f:
+        f.write(log_message + '\n')
 credslayer_logger.found = found 
 
 def log_progress(message):
