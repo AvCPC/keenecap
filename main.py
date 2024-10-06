@@ -64,7 +64,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
     """Worker to manage packet captures on all interfaces."""
     import time
     import os
-    from keenecap.credentials_extract import analyze_pcap_with_sniff
+    from CredSLayer import process_pcap
 
     # Initial check for running captures
     capture_interfaces = router.get_capture_interfaces()
@@ -114,7 +114,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
                 capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]  
                 logger.info(f"Downloading capture file {capture_file} to {output_path}")
                 router.download_capture_file(capture_file, output_path)
-                executor.submit(analyze_pcap_with_sniff, output_path)
+                executor.submit(process_pcap, output_path)
                 router.delete_remote_capture_file(interface)
                 router.start_capture(interface)
 
