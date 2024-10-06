@@ -9,10 +9,10 @@ def process_pcap_with_logging(output_path, prefix='captures/', delete_after=Fals
 
     logger.debug(f"Starting pcap processing for {output_path}")
     try:
-        process_pcap(prefix+output_path)
+        process_pcap(prefix+output_path, tshark_filter='not ssl and not tls')
 
     except Exception as e:
         logger.error(f"Error processing pcap: {e}") 
-    logger.debug(f"Completed pcap processing for {output_path}")
+    logger.info(f"Completed pcap processing for {output_path}")
     if delete_after:
         os.remove(prefix+output_path)
