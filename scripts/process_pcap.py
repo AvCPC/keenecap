@@ -1,4 +1,9 @@
+import sys
+import os
 import argparse
+
+# Add the parent directory to the Python path
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from keenecap.pcap_processor import process_pcap_with_logging
 
 def main():
