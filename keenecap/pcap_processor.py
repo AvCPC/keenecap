@@ -15,9 +15,6 @@ def process_pcap_with_logging(output_path, prefix='captures/', tshark_filter='no
             logger.error(f"Error processing pcap: {e}")
     else:
         logger.info("Processing of pcap files is disabled.")
-
-    except Exception as e:
-        logger.error(f"Error processing pcap: {e}") 
     logger.info(f"Completed pcap processing for {output_path}")
     if delete_after:
         os.remove(prefix+output_path)
