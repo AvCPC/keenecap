@@ -32,16 +32,19 @@ def main():
                      `.(   `.(   `.(   `.(  '._.' `.(   `.(   `.(   `.(   `.(   `.(   `.(  
  ''')
     # Argument parser configuration
-    parser = argparse.ArgumentParser(description="Router management script.")
-    parser.add_argument("-i", "--ip", required=True, help="Router IP address.")
-    parser.add_argument("-p", "--port", type=int, default=80, help="Router port (default 80).")
-    parser.add_argument("-l", "--login", required=True, help="Username for authentication.")
-    parser.add_argument("-P", "--passwd", required=True, help="Password for authentication.")
-    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for debugging.")
-    parser.add_argument("-s", "--size", type=float, default=1.0, help="Capture size limit in MB (default 1.0 MB).")
-    parser.add_argument("--delete", action="store_true", help="Delete the pcap file after processing.")
-    parser.add_argument("--filter", default='not ssl and not tls', help="Optional filter for tshark processing.")
-    parser.add_argument("--no-process", action="store_true", help="Disable processing of pcap files.")
+    parser = argparse.ArgumentParser(
+        description="Router management script for Keenetic routers. This script allows you to authenticate, manage network traffic captures, and handle capture files.",
+        epilog="Example usage: python main.py -i 192.168.1.1 -l admin -P password --size 2.0 --delete"
+    )
+    parser.add_argument("-i", "--ip", required=True, help="Router IP address. This is the address used to access the router's web interface.")
+    parser.add_argument("-p", "--port", type=int, default=80, help="Router port (default 80). Specify the port if your router uses a non-standard port for web access.")
+    parser.add_argument("-l", "--login", required=True, help="Username for authentication. This is the username you use to log into the router.")
+    parser.add_argument("-P", "--passwd", required=True, help="Password for authentication. This is the password associated with the login username.")
+    parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for debugging. Use this option to see detailed logs for debugging purposes.")
+    parser.add_argument("-s", "--size", type=float, default=1.0, help="Capture size limit in MB (default 1.0 MB). Specify the maximum size of the capture file before it is processed.")
+    parser.add_argument("--delete", action="store_true", help="Delete the pcap file after processing. Use this option to automatically remove the capture file after it has been processed.")
+    parser.add_argument("--filter", default='not ssl and not tls', help="Optional filter for tshark processing. Use this to specify a tshark filter to apply during capture processing.")
+    parser.add_argument("--no-process", action="store_true", help="Disable processing of pcap files. Use this option to skip the processing step and only capture the data.")
 
     # Parse command line arguments
     args = parser.parse_args()
