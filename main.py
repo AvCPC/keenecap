@@ -45,6 +45,7 @@ def main():
             try:
                 future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size)
                 future.result()  # Wait for the capture worker to complete
+            
             except KeyboardInterrupt:
                 logger.info("Capture worker stopping...")
                 stop_threads = True
