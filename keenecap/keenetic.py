@@ -1,5 +1,6 @@
 import requests
 import hashlib
+import time
 from keenecap.logger import logger
 from urllib.parse import quote
 
@@ -28,20 +29,32 @@ class Router:
         return response.status_code == 200
 
     def _send_request(self, query, post_data=None):
-        """Send a GET or POST request to the router and log debugging information."""
+        """Send a GET or POST request to the router with retries and exponential backoff."""
         url = f"http://{self.ip_addr}/{query}"
+        max_retries = 5
+        delay = 1  # initial delay in seconds
 
-        # If we have data to send, it's a POST request
-        if post_data:
-            response = self.session.post(url, json=post_data)
-        else:
-            response = self.session.get(url)
+        for attempt in range(max_retries):
+            try:
+                # If we have data to send, it's a POST request
+                if post_data:
+                    response = self.session.post(url, json=post_data)
+                else:
+                    response = self.session.get(url)
 
-        # Log request details
-        logger.debug(f"Request URL: {url}")
-        logger.debug(f"HTTP Status Code: {response.status_code}")
+                # Log request details
+                logger.debug(f"Request URL: {url}")
+                logger.debug(f"HTTP Status Code: {response.status_code}")
 
-        return response
+                return response
+
+            except requests.RequestException as e:
+                logger.error(f"Request failed: {e}, attempt {attempt + 1} of {max_retries}")
+                time.sleep(delay)
+                delay *= 2  # Exponential backoff
+
+        logger.error("Max retries reached. Request failed.")
+        return None
 
     def get_version(self):
         """Retrieve the router version."""
