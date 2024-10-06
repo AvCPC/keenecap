@@ -11,7 +11,7 @@ def main():
     parser.add_argument("file", help="Path to the pcap file to process.")
     args = parser.parse_args()
 
-    process_pcap_with_logging(args.file)
+    process_pcap_with_logging(args.file,'')
 
 if __name__ == "__main__":
     main()

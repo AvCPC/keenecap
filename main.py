@@ -58,7 +58,7 @@ def main():
                 if capture_interfaces:
                     for interface in capture_interfaces["monitor"]["capture"]["interface"].keys():
                         capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
-                        logger.info(f"Capture file for interface {interface}: {capture_file}")
+                        #logger.info(f"Capture file for interface {interface}: {capture_file}")
                         router.stop_capture(interface)
                         router.delete_remote_capture_file(interface)
                 os._exit(0)        
@@ -115,14 +115,14 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
 
             if bytes_total > capture_size_mb * 1_000_000:  # Check if capture size exceeds specified limit
                 router.stop_capture(interface)
-                logger.info(f"Capture on interface {interface} exceeds {capture_size_mb}MB, processing...")
+                logger.debug(f"Capture on interface {interface} exceeds {capture_size_mb}MB, processing...")
                 timestamp = time.strftime("%Y%m%d_%H%M%S")
                 output_path = f"{interface}_capture_{timestamp}.pcap"
                 #time.sleep(1)
                 capture_interfaces = router.get_capture_interfaces()
                 #print(capture_interfaces)
                 capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]  
-                logger.info(f"Downloading capture file {capture_file} to {output_path}")
+                logger.debug(f"Downloading capture file {capture_file} to {output_path}")
                 router.download_capture_file(capture_file, output_path)
                 executor.submit(process_pcap_with_logging, output_path)
                 router.delete_remote_capture_file(interface)
