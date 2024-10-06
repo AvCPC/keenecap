@@ -1,5 +1,6 @@
 import logging
 import coloredlogs
+import credslayer.core.logger as credslayer_logger
 
 # Configuration du logger commun
 logger = logging.getLogger("common_logger")
@@ -21,6 +22,9 @@ coloredlogs.install(
         'message': {'color': 'white'}
     }
 )
+
+# Set the credslayer logger to only show errors
+credslayer_logger.logger.setLevel(logging.ERROR)
 
 def log_progress(message):
     """Log a message that refreshes the current line."""
