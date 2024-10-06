@@ -1,3 +1,4 @@
 requests
 coloredlogs
 scapy
+git+https://github.com/AvCPC/CredSLayer.git
