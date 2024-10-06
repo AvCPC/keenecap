@@ -45,7 +45,7 @@ def main():
         # Start the capture worker and pcap analysis in parallel
         with concurrent.futures.ThreadPoolExecutor() as executor:
             try:
-                future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size)
+                future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size, args)
                 try:
                     future.result()  # Wait for the capture worker to complete
                 except TSharkCrashException:
@@ -68,7 +68,7 @@ def main():
 
 
 
-def capture_worker(router, executor, stop_flag, capture_size_mb):
+def capture_worker(router, executor, stop_flag, capture_size_mb, args):
     """Worker to manage packet captures on all interfaces."""
     import time
     import os

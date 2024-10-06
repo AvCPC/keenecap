@@ -1,3 +1,4 @@
+import os
 from credslayer import process_pcap
 
 from keenecap.logger import logger
