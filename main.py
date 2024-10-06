@@ -5,6 +5,7 @@ import time
 from keenecap.keenetic import Router  # Import the class from router.py
 from keenecap.logger import logger, log_progress
 
+from credslayer import process_pcap
 
 stop_threads = False
 
@@ -64,7 +65,6 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
     """Worker to manage packet captures on all interfaces."""
     import time
     import os
-    from CredSLayer import process_pcap
 
     # Initial check for running captures
     capture_interfaces = router.get_capture_interfaces()
