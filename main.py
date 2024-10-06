@@ -2,6 +2,7 @@ import argparse
 import logging
 import concurrent.futures
 import time
+from pyshark.capture.capture import TSharkCrashException
 from keenecap.keenetic import Router  # Import the class from router.py
 from keenecap.logger import logger, log_progress
 
@@ -44,7 +45,10 @@ def main():
         with concurrent.futures.ThreadPoolExecutor() as executor:
             try:
                 future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size)
-                future.result()  # Wait for the capture worker to complete
+                try:
+                    future.result()  # Wait for the capture worker to complete
+                except TSharkCrashException:
+                    logger.info("TShark crashed during capture, likely due to a KeyboardInterrupt.")
             
             except KeyboardInterrupt:
                 logger.info("Capture worker stopping...")
