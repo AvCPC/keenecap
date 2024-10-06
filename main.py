@@ -40,6 +40,7 @@ def main():
     parser.add_argument("-v", "--verbose", action="store_true", help="Enable verbose mode for debugging.")
     parser.add_argument("-s", "--size", type=float, default=1.0, help="Capture size limit in MB (default 1.0 MB).")
     parser.add_argument("--delete", action="store_true", help="Delete the pcap file after processing.")
+    parser.add_argument("--filter", default='not ssl and not tls', help="Optional filter for tshark processing.")
 
     # Parse command line arguments
     args = parser.parse_args()
@@ -147,7 +148,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb, args):
                 capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]  
                 logger.debug(f"Downloading capture file {capture_file} to {output_path}")
                 router.download_capture_file(capture_file, output_path)
-                executor.submit(process_pcap_with_logging, output_path, delete_after= args.delete)
+                executor.submit(process_pcap_with_logging, output_path, tshark_filter=args.filter, delete_after=args.delete)
                 router.delete_remote_capture_file(interface)
                 router.start_capture(interface)
 
