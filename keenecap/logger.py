@@ -1,15 +1,17 @@
+import os
+import time
 import logging
 import coloredlogs
 import credslayer.core.logger as credslayer_logger
 
 # Configuration du logger commun
-logger = logging.getLogger("common_logger")
+logger = logging.getLogger("keenecap")
 coloredlogs.install(
     level='INFO',
     logger=logger,
     fmt='%(asctime)s %(hostname)s %(levelname)s %(message)s',
     level_styles={
-        'info': {'color': 'green'},
+        'info': {'color': 'white'},
         'warning': {'color': 'yellow'},
         'error': {'color': 'red', 'bold': True},
         'critical': {'color': 'red', 'bold': True, 'background': 'white'},
@@ -25,8 +27,6 @@ coloredlogs.install(
 
 # Set the credslayer logger to only show errors
 credslayer_logger.logger.setLevel(logging.ERROR)
-import os
-import time
 
 # Create results directory if it doesn't exist
 os.makedirs('results', exist_ok=True)
@@ -40,6 +40,7 @@ def found(session, msg):
     logger.info(log_message)
     with open(results_file_path, 'a') as f:
         f.write(log_message + '\n')
+
 credslayer_logger.found = found 
 
 def log_progress(message):

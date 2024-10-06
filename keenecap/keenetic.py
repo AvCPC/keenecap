@@ -66,7 +66,7 @@ class Router:
             description = version_info["show"]["version"]["description"]
             arch = version_info["show"]["version"]["arch"]
             release = version_info["show"]["version"]["release"]
-            logger.info(f"Description: {description}, Arch: {arch}, Release: {release}")
+            logger.info(f"Router: {description}, Arch: {arch}, Release: {release}")
             return version_info
         else:
             logger.error("Failed to retrieve version")
@@ -78,7 +78,7 @@ class Router:
         payload = {"enable": True}
         response = self._send_request(url, post_data=payload)
         if response.status_code == 200:
-            logger.info(f"Capture started successfully on interface {interface}")
+            logger.debug(f"Capture started successfully on interface {interface}")
             return True
         else:
             logger.error(f"Failed to start capture on interface {interface}")
@@ -90,7 +90,7 @@ class Router:
         payload = {"enable": False, "reset": True}
         response = self._send_request(url, post_data=payload)
         if response.status_code == 200:
-            logger.info(f"Remote capture file deleted successfully on interface {interface}")
+            logger.debug(f"Remote capture file deleted successfully on interface {interface}")
             return True
         else:
             logger.error(f"Failed to delete remote capture file on interface {interface}")
@@ -102,7 +102,7 @@ class Router:
             payload = {"enable": False}
             response = self._send_request(url, post_data=payload)
             if response.status_code == 200:
-                logger.info(f"Capture stopped successfully on interface {interface}")
+                logger.debug(f"Capture stopped successfully on interface {interface}")
                 return True
             else:
                 logger.error(f"Failed to stop capture on interface {interface}")
@@ -131,7 +131,7 @@ class Router:
             sanitized_output_path = output_path.replace('/', '_')
             with open(f"captures/{sanitized_output_path}", 'wb') as file:
                 file.write(response.content)
-            logger.info(f"Capture file downloaded successfully to {output_path}")
+            logger.debug(f"Capture file downloaded successfully to {output_path}")
             return True
         else:
             logger.error("Failed to download capture file")

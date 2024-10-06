@@ -1,4 +1,23 @@
 # keenecap
+```
+                    
+                        ██╗  ██╗███████╗███████╗███╗   ██╗███████╗ ██████╗ █████╗ ██████╗ 
+                        ██║ ██╔╝██╔════╝██╔════╝████╗  ██║██╔════╝██╔════╝██╔══██╗██╔══██╗
+                        █████╔╝ █████╗  █████╗  ██╔██╗ ██║█████╗  ██║     ███████║██████╔╝
+                        ██╔═██╗ ██╔══╝  ██╔══╝  ██║╚██╗██║██╔══╝  ██║     ██╔══██║██╔═══╝ 
+                        ██║  ██╗███████╗███████╗██║ ╚████║███████╗╚██████╗██║  ██║██║     
+                        ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═══╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝     
+                                                                                                                         
+                                                                                                                             
+
+                    01001011 01100101 01100101 01101110 01100101 01000011 01100001 01110000 
+
+                     .-.-. .-.-. .-.-. .-.-.      .-.-. .-.-. .-.-. .-.-. .-.-. .-.-. .-.-. 
+                    ( T .'( e .'( A .'( m .'.-.-.( O .'( n .'( e .'( F .'( 1 .'( s .'( t .' 
+                     `.(   `.(   `.(   `.(  '._.' `.(   `.(   `.(   `.(   `.(   `.(   `.(  
+```                                                               
+
+
 ## Description
 This project is designed to interact with a Keenetic router, providing functionalities such as authentication, capturing network traffic, and downloading capture files.
 
@@ -18,6 +37,8 @@ pip install -r requirements.txt
 To start the main application, execute:
 ```bash
 python main.py
+usage: main.py [-h] -i IP [-p PORT] -l LOGIN -P PASSWD [-v] [-s SIZE] [--delete]
+
 ```
 
 ## Features
@@ -28,7 +49,8 @@ python main.py
 
 ## Directory Structure
 - `keenecap/`: Contains the core modules for interacting with the router.
-- `captures/`: Directory for storing capture files (tracked but contents are ignored).
+- `captures/`: Directory for storing capture files .
+- `results/`: Directory for storing log file with dumped creds.
 - `main.py`: Entry point for the application.
 
 ## Contributing

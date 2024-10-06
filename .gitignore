@@ -1,4 +1,6 @@
 .aider*
 captures/*
+results/*
 !captures/.gitkeep
+!results/.gitkeep
 __pycache__/

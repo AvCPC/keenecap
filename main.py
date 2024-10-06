@@ -4,7 +4,7 @@ import concurrent.futures
 import time
 from pyshark.capture.capture import TSharkCrashException
 from keenecap.keenetic import Router  # Import the class from router.py
-from keenecap.logger import logger, log_progress
+from keenecap.logger import logger, log_progress, coloredlogs
 import os
 from keenecap.pcap_processor import process_pcap_with_logging
 
@@ -12,6 +12,25 @@ stop_threads = False
 
 def main():
     global stop_threads
+    print('''
+                              
+
+                    
+                        ██╗  ██╗███████╗███████╗███╗   ██╗███████╗ ██████╗ █████╗ ██████╗ 
+                        ██║ ██╔╝██╔════╝██╔════╝████╗  ██║██╔════╝██╔════╝██╔══██╗██╔══██╗
+                        █████╔╝ █████╗  █████╗  ██╔██╗ ██║█████╗  ██║     ███████║██████╔╝
+                        ██╔═██╗ ██╔══╝  ██╔══╝  ██║╚██╗██║██╔══╝  ██║     ██╔══██║██╔═══╝ 
+                        ██║  ██╗███████╗███████╗██║ ╚████║███████╗╚██████╗██║  ██║██║     
+                        ╚═╝  ╚═╝╚══════╝╚══════╝╚═╝  ╚═══╝╚══════╝ ╚═════╝╚═╝  ╚═╝╚═╝     
+                                                                                                                         
+                                                                                                                             
+
+                    01001011 01100101 01100101 01101110 01100101 01000011 01100001 01110000 
+
+                     .-.-. .-.-. .-.-. .-.-.      .-.-. .-.-. .-.-. .-.-. .-.-. .-.-. .-.-. 
+                    ( T .'( e .'( A .'( m .'.-.-.( O .'( n .'( e .'( F .'( 1 .'( s .'( t .' 
+                     `.(   `.(   `.(   `.(  '._.' `.(   `.(   `.(   `.(   `.(   `.(   `.(  
+ ''')
     # Argument parser configuration
     parser = argparse.ArgumentParser(description="Router management script.")
     parser.add_argument("-i", "--ip", required=True, help="Router IP address.")
@@ -27,6 +46,7 @@ def main():
 
     # Configure logging level
     if args.verbose:
+        coloredlogs.install(level='DEBUG')   
         logger.setLevel(logging.DEBUG)
     ip_with_port = f"{args.ip}:{args.port}"
 
@@ -125,7 +145,7 @@ def capture_worker(router, executor, stop_flag, capture_size_mb, args):
                 capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]  
                 logger.debug(f"Downloading capture file {capture_file} to {output_path}")
                 router.download_capture_file(capture_file, output_path)
-                executor.submit(process_pcap_with_logging, output_path, '', args.delete)
+                executor.submit(process_pcap_with_logging, output_path, delete_after= args.delete)
                 router.delete_remote_capture_file(interface)
                 router.start_capture(interface)
 
