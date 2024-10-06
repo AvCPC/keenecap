@@ -77,20 +77,24 @@ def capture_worker(router, executor, stop_flag, capture_size_mb):
         logger.error("Failed to retrieve capture interfaces")
         return
 
-    for interface, details in list(capture_interfaces["monitor"]["capture"]["interface"].items())[-3:]:
-        if details["statistics"]["started"]:
-            logger.info(f"Capture already running on interface {interface}, stopping and downloading...")
-            router.stop_capture(interface)
-            capture_interfaces = router.get_capture_interfaces()
-            capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
-            router.stop_capture(interface)
-            timestamp = time.strftime("%Y%m%d_%H%M%S")
-            output_path = f"{interface}_capture_{timestamp}.pcap"
-            router.download_capture_file(capture_file, output_path)
-            router.delete_remote_capture_file(interface)
-    
-        logger.info(f"Starting new capture on interface {interface}...")
-        router.start_capture(interface)
+    try:
+        for interface, details in list(capture_interfaces["monitor"]["capture"]["interface"].items())[-3:]:
+            if details["statistics"]["started"]:
+                logger.info(f"Capture already running on interface {interface}, stopping and downloading...")
+                router.stop_capture(interface)
+                capture_interfaces = router.get_capture_interfaces()
+                capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
+                router.stop_capture(interface)
+                timestamp = time.strftime("%Y%m%d_%H%M%S")
+                output_path = f"{interface}_capture_{timestamp}.pcap"
+                router.download_capture_file(capture_file, output_path)
+                router.delete_remote_capture_file(interface)
+        
+            logger.info(f"Starting new capture on interface {interface}...")
+            router.start_capture(interface)
+    except TSharkCrashException as e:
+        logger.error(f"TShark crashed: {e}")
+        return
 
     while True:
         if stop_flag():
