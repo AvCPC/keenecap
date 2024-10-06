@@ -54,7 +54,7 @@ class Router:
                 delay *= 2  # Exponential backoff
 
         logger.error("Max retries reached. Request failed.")
-        return None
+        raise RuntimeError("Max retries reached for request")
 
     def get_version(self):
         """Retrieve the router version."""

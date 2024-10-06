@@ -37,23 +37,26 @@ def main():
         logger.error("Authentication failed")
         return
 
-    router.get_version()
-    # Start the capture worker and pcap analysis in parallel
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        try:
-            future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size)
-            future.result()  # Wait for the capture worker to complete
-        except KeyboardInterrupt:
-            logger.info("Capture worker stopping...")
-            stop_threads = True
-            future.result()  # Wait for the capture worker to complete
-            capture_interfaces = router.get_capture_interfaces()
-            if capture_interfaces:
-                for interface in capture_interfaces["monitor"]["capture"]["interface"].keys():
-                    capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
-                    logger.info(f"Capture file for interface {interface}: {capture_file}")
-                    router.stop_capture(interface)
-                    router.delete_remote_capture_file(interface)
+    try:
+        router.get_version()
+        # Start the capture worker and pcap analysis in parallel
+        with concurrent.futures.ThreadPoolExecutor() as executor:
+            try:
+                future = executor.submit(capture_worker, router, executor, lambda: stop_threads, args.size)
+                future.result()  # Wait for the capture worker to complete
+            except KeyboardInterrupt:
+                logger.info("Capture worker stopping...")
+                stop_threads = True
+                future.result()  # Wait for the capture worker to complete
+                capture_interfaces = router.get_capture_interfaces()
+                if capture_interfaces:
+                    for interface in capture_interfaces["monitor"]["capture"]["interface"].keys():
+                        capture_file = capture_interfaces["monitor"]["capture"]["interface"][interface]["capture-file"]
+                        logger.info(f"Capture file for interface {interface}: {capture_file}")
+                        router.stop_capture(interface)
+                        router.delete_remote_capture_file(interface)
+    except RuntimeError as e:
+        logger.error(f"Aborting due to error: {e}")
 
 
 
