@@ -19,7 +19,7 @@
 
 
 ## Description
-This project is designed to interact with a Keenetic router, providing functionalities such as authentication, capturing network traffic, and downloading capture files.
+This project is designed to interact with a Keenetic router, providing functionalities such as authentication, capturing network traffic, downloading capture files, and using CredSlayer to extract credentials.
 
 ## Installation
 
