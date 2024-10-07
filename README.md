@@ -47,7 +47,14 @@ usage: main.py [-h] -i IP [-p PORT] -l LOGIN -P PASSWD [-v] [-s SIZE] [--delete]
 - Download capture files
 - Manage capture interfaces
 
-## Directory Structure
+## Additional Scripts
+
+### scripts/process_pcap.py
+This script is used to process pcap files independently. It allows you to specify a pcap file for processing and optionally delete the file after processing. To use this script, run:
+
+```bash
+python scripts/process_pcap.py -f path/to/pcapfile.pcap --delete
+```
 - `keenecap/`: Contains the core modules for interacting with the router.
 - `captures/`: Directory for storing capture files .
 - `results/`: Directory for storing log file with dumped creds.
