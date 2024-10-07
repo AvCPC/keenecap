@@ -8,7 +8,7 @@ from keenecap.pcap_processor import process_pcap_with_logging
 
 def main():
     parser = argparse.ArgumentParser(description="Process a pcap file.")
-    parser.add_argument("file", help="Path to the pcap file to process.")
+    parser.add_argument("-f", "--file", required=True, help="Path to the pcap file to process.")
     parser.add_argument("--delete", action="store_true", help="Delete the pcap file after processing.")
     args = parser.parse_args()
 
