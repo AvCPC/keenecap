@@ -36,8 +36,26 @@ pip install -r requirements.txt
 ## Usage
 To start the main application, execute:
 ```bash
-python main.py
-usage: main.py [-h] -i IP [-p PORT] -l LOGIN -P PASSWD [-v] [-s SIZE] [--delete]
+python main.py --help
+usage: main.py [-h] -i IP [-p PORT] -l LOGIN -P PASSWD [-v] [-s SIZE] [--delete] [--filter FILTER] [--no-process]
+
+Router management script for Keenetic routers. This script allows you to authenticate, manage network traffic captures, and handle capture files.
+
+options:
+  -h, --help            show this help message and exit
+  -i IP, --ip IP        Router IP address. This is the address used to access the router's web interface.
+  -p PORT, --port PORT  Router port (default 80). Specify the port if your router uses a non-standard port for web access.
+  -l LOGIN, --login LOGIN
+                        Username for authentication. This is the username you use to log into the router.
+  -P PASSWD, --passwd PASSWD
+                        Password for authentication. This is the password associated with the login username.
+  -v, --verbose         Enable verbose mode for debugging. Use this option to see detailed logs for debugging purposes.
+  -s SIZE, --size SIZE  Capture size limit in MB (default 1.0 MB). Specify the maximum size of the capture file before it is processed.
+  --delete              Delete the pcap file after processing. Use this option to automatically remove the capture file after it has been processed.
+  --filter FILTER       Optional filter for tshark processing. Use this to specify a tshark filter to apply during capture processing.
+  --no-process          Disable processing of pcap files. Use this option to skip the processing step and only capture the data.
+
+Example usage: python main.py -i 192.168.1.1 -l admin -P password --size 2.0 --delete
 
 ```
 
