@@ -3,7 +3,7 @@ from credslayer import process_pcap
 
 from keenecap.logger import logger
 
-def process_pcap_with_logging(output_path, prefix='captures/', tshark_filter='not ssl and not tls', delete_after=False, no_process=False):
+def process_pcap_with_logging(output_path, prefix='captures/', tshark_filter='not tcp.port==443 and not tcp.port==8443 and not tcp.port==993 and not tcp.port==995 and not tcp.port==465 and not udp.port==500 and not udp.port==4500 and not udp.port==443', delete_after=False, no_process=False):
     # Process the pcap file
     # ...
 

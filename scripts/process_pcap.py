@@ -12,7 +12,7 @@ def main():
     parser.add_argument("--delete", action="store_true", help="Delete the pcap file after processing.")
     args = parser.parse_args()
 
-    process_pcap_with_logging(args.file, '', args.delete)
+    process_pcap_with_logging(args.file, '', delete_after=args.delete)
 
 if __name__ == "__main__":
     main()
